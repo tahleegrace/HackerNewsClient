@@ -1,3 +1,30 @@
-<p>
-  search-results works!
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col-md-1">
+      <strong>Date</strong>
+    </div>
+    <div class="col-md-2">
+      <strong>Author</strong>
+    </div>
+    <div class="col-md-8">
+      <strong>Title</strong>
+    </div>
+    <div class="col-md-1">
+      <strong>Points</strong>
+    </div>
+  </div>
+  <div class="row" *ngFor="let result of results">
+    <div class="col-md-1">
+      {{ result.created_at | date: 'dd/MM/yyyy' }}
+    </div>
+    <div class="col-md-2">
+      {{ result.author }}
+    </div>
+    <div class="col-md-8">
+      <a [href]="result.url">{{ result.title }}</a>
+    </div>
+    <div class="col-md-1">
+      {{ result.points }}
+    </div>
+  </div>
+</div>
