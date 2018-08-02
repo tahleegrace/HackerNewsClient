@@ -7,11 +7,13 @@ import { HackerNewsService } from "./service/hacker-news.service";
 
 import { AppComponent } from './app.component';
 import { SearchResultsComponent } from './search-results/search-results.component';
+import { PagerComponent } from './pager/pager.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SearchResultsComponent
+    SearchResultsComponent,
+    PagerComponent
   ],
   imports: [
     BrowserModule,
