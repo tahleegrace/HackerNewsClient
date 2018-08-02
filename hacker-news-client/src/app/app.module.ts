@@ -5,10 +5,12 @@ import { HttpClientModule } from "@angular/common/http";
 import { HackerNewsService } from "./service/hacker-news.service";
 
 import { AppComponent } from './app.component';
+import { SearchResultsComponent } from './search-results/search-results.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SearchResultsComponent
   ],
   imports: [
     BrowserModule,
