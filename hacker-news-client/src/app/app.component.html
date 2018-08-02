@@ -1,2 +1,10 @@
 <h1>Hacker News Search Client</h1>
+<div class="container search-box">
+  <div class="row">
+    <div class="col-md-12">
+      <input id="query" type="text" class="form-control" [formControl]="queryField" placeholder="Search ..." />
+    </div>
+  </div>
+</div>
+
 <app-search-results [results]="results"></app-search-results>
