@@ -29,45 +29,39 @@ export class AppComponent implements OnInit {
       debounceTime(200),
       distinctUntilChanged(),
       switchMap((query: string) => {
-        if (query) {
-          this.isLoading = true;
-          this.hasError = false;
+        this.currentPage = 1;
 
-          return this.hackerNewsService.getSearchResults(query, this.currentPage, this.pageSize).pipe(
-            map((result) => result),
-            catchError(() => {
-              this.isLoading = false;
-              this.hasError = true;
-              return empty();
-            }));
-        } else {
-          return empty();
-        }
+        return this.getSearchResults(query);
       }))
-      .subscribe((result: ISearchResults) => {
-        this.totalPages = result.nbPages;
-        this.isLoading = false;
-        this.results = result ? result.hits : [];
-      });
+      .subscribe(this.processSearchResults.bind(this));
   }
 
   public onPageChange() {
-    if (this.queryField.value) {
+    this.getSearchResults(this.queryField.value).subscribe(this.processSearchResults.bind(this));
+  }
+
+  private getSearchResults(query: string): Observable<ISearchResults> {
+    if (query) {
       this.isLoading = true;
       this.hasError = false;
 
-      this.hackerNewsService.getSearchResults(this.queryField.value, this.currentPage, this.pageSize).pipe(
+      return this.hackerNewsService.getSearchResults(query, this.currentPage, this.pageSize).pipe(
         map((result) => result),
         catchError(() => {
           this.isLoading = false;
           this.hasError = true;
           return empty();
-        }))
-        .subscribe((result: ISearchResults) => {
-          this.totalPages = result.nbPages;
-          this.isLoading = false;
-          this.results = result ? result.hits : [];
-        });
+        }));
+    } else {
+      return empty();
+    }
+  }
+
+  private processSearchResults(result: ISearchResults) {
+    if (result) {
+      this.totalPages = result.nbPages;
+      this.isLoading = false;
+      this.results = result ? result.hits : [];
     }
   }
 }

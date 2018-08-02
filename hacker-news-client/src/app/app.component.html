@@ -7,10 +7,8 @@
   </div>
 </div>
 
-<ng-container *ngIf="!isLoading && !hasError && results">
-  <app-search-results [results]="results"></app-search-results>
-  <app-pager [(currentPage)]="currentPage" (currentPageChange)="onPageChange()" [totalPages]="totalPages" *ngIf="results.length > 0"></app-pager>
-</ng-container>
+<app-search-results [results]="results" *ngIf="!isLoading && !hasError && results != null"></app-search-results>
+<app-pager [(currentPage)]="currentPage" (currentPageChange)="onPageChange()" [totalPages]="totalPages"></app-pager>
 
 <ng-container *ngIf="isLoading">
   <div class="container">
