@@ -7,4 +7,18 @@
   </div>
 </div>
 
-<app-search-results [results]="results"></app-search-results>
+<ng-container *ngIf="!isLoading && !hasError">
+  <app-search-results [results]="results"></app-search-results>
+</ng-container>
+
+<ng-container *ngIf="isLoading">
+  <div class="container">
+    Loading results. Please wait ...
+  </div>
+</ng-container>
+
+<ng-container *ngIf="hasError && !isLoading">
+  <div class="container">
+    An error occurred while searching. Please refresh the page and try again.
+  </div>
+</ng-container>

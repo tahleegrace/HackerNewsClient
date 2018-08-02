@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from "@angular/forms";
-import { debounceTime, distinctUntilChanged, switchMap } from "rxjs/operators";
 
+import { Observable, empty, of } from "rxjs";
+import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from "rxjs/operators";
 import { HackerNewsService } from "./service/hacker-news.service";
 
 @Component({
@@ -14,15 +15,30 @@ export class AppComponent implements OnInit {
 
   public results: ISearchResult[];
 
+  public isLoading: boolean = false;
+  public hasError: boolean = false;
+
   constructor(private hackerNewsService: HackerNewsService) { }
 
   ngOnInit() {
     this.queryField.valueChanges.pipe(
       debounceTime(200),
       distinctUntilChanged(),
-      switchMap((query: string) => this.hackerNewsService.getSearchResults(query, 1, 50)))
-      .subscribe((result) => {
-        this.results = result.hits;
+      switchMap((query: string) => {
+        this.isLoading = true;
+        this.hasError = false;
+
+        return this.hackerNewsService.getSearchResults(query, 1, 50).pipe(
+          map((result) => result),
+          catchError(() => {
+            this.isLoading = false;
+            this.hasError = true;
+            return empty();
+          }));
+      }))
+      .subscribe((result: ISearchResults) => {
+        this.isLoading = false;
+        this.results = result ? result.hits : [];
       });
   }
 }
